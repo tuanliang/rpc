@@ -12,7 +12,7 @@ var _ service.HelloService = (*HelloServiceClient)(nil)
 
 func NewHelloServiceClient(network, address string) (*HelloServiceClient, error) {
 	// 建立socket连接
-	client, err := rpc.Dial("tcp", ":1234")
+	client, err := rpc.Dial(network, address)
 	if err != nil {
 		return nil, err
 	}
