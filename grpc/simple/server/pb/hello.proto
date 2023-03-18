@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package hello;
+option go_package="github.com/tuanliang/rpc/grpc/simple/server/pb";
+
+service HelloService{
+  rpc Hello(Request)returns (Response);
+}
+
+message Request {
+    string value = 1;
+}
+message Response {
+  string value = 1;
+}
