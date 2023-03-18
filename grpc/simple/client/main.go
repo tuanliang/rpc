@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/tuanliang/rpc/grpc/simple/server/pb"
 	"google.golang.org/grpc"
@@ -22,4 +23,29 @@ func main() {
 		panic(err)
 	}
 	fmt.Println(resp)
+
+	stream, err := client.Channel(context.Background())
+	if err != nil {
+		panic(err)
+	}
+	// 启用一个Goroutine发送请求
+	go func() {
+		for {
+			// recover()
+			err := stream.Send(&pb.Request{Value: "shiyi1"})
+			if err != nil {
+				panic(err)
+			}
+			time.Sleep(1 * time.Second)
+		}
+	}()
+	for {
+		// 主循环，负责接收服务端响应
+		resp, err = stream.Recv()
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(resp)
+	}
+
 }

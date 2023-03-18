@@ -5,6 +5,7 @@ option go_package="github.com/tuanliang/rpc/grpc/simple/server/pb";
 
 service HelloService{
   rpc Hello(Request)returns (Response);
+  rpc Channel(stream Request)returns(stream Response){}
 }
 
 message Request {
