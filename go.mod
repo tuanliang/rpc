@@ -3,6 +3,7 @@ module github.com/tuanliang/rpc
 go 1.20
 
 require (
+	github.com/golang/snappy v0.0.4
 	github.com/stretchr/testify v1.8.2
 	google.golang.org/protobuf v1.30.0
 )
