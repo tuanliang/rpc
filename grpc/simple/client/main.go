@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/tuanliang/rpc/grpc/middleware/server"
 	"github.com/tuanliang/rpc/grpc/simple/server/pb"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 )
 
 func main() {
@@ -18,13 +20,18 @@ func main() {
 
 	// grpc 为我们生成一个客户端调用服务端的sdk
 	client := pb.NewHelloServiceClient(conn)
-	resp, err := client.Hello(context.Background(), &pb.Request{Value: "shiyi"})
+
+	// 添加认证凭证信息
+	crendential := server.NewClientCredential("admin", "123456")
+	ctx := metadata.NewOutgoingContext(context.Background(), crendential)
+	resp, err := client.Hello(ctx, &pb.Request{Value: "shiyi"})
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println(resp)
 
-	stream, err := client.Channel(context.Background())
+	// stream, err := client.Channel(context.Background()) //未携带信息，
+	stream, err := client.Channel(ctx) //携带信息
 	if err != nil {
 		panic(err)
 	}
